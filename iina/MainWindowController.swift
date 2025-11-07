@@ -178,6 +178,8 @@ class MainWindowController: PlayerWindowController {
   /** Views that will show/hide when cursor moving in/out the window. */
   var fadeableViews: [NSView] = []
 
+  var keepControlBar: Bool = false
+
   // Left and right arrow buttons
 
   /** The maximum pressure recorded when clicking on the arrow buttons. */
@@ -1823,26 +1825,29 @@ class MainWindowController: PlayerWindowController {
     guard pipStatus == .notInPIP || animationState == .hidden else {
       return
     }
-    // Don't hide UI when auto hide control bar is disabled
-    guard force || Preference.bool(for: .enableControlBarAutoHide) else { return }
+    let viewsToHide: [NSView]
+
+    if force || Preference.bool(for: .enableControlBarAutoHide) || currentControlBar == nil {
+      self.keepControlBar = false
+      viewsToHide = fadeableViews
+    } else {
+      self.keepControlBar = true
+      viewsToHide = fadeableViews.filter { $0 != currentControlBar }
+    }
 
     animationState = .willHide
     player.refreshSyncUITimer()
-    fadeableViews.forEach { (v) in
-      v.isHidden = false
-    }
+    viewsToHide.forEach { $0.isHidden = false }
     NSAnimationContext.runAnimationGroup({ (context) in
       context.duration = UIAnimationDuration
-      fadeableViews.forEach { (v) in
-        v.animator().alphaValue = 0
-      }
+      viewsToHide.forEach { $0.animator().alphaValue = 0 }
       if !self.fsState.isFullscreen {
         titleTextField?.animator().alphaValue = 0
       }
     }) {
       // if no interrupt then hide animation
       if self.animationState == .willHide {
-        self.fadeableViews.forEach { (v) in
+        viewsToHide.forEach { (v) in
           if let btn = v as? NSButton, self.standardWindowButtons.contains(btn) {
             v.alphaValue = 1e-100
           } else {
@@ -1854,22 +1859,30 @@ class MainWindowController: PlayerWindowController {
     }
   }
 
-  func showUI() {
+  func showUI(onlyControlBar: Bool = false) {
     if player.disableUI { return }
-    animationState = .willShow
-    fadeableViews.forEach { (v) in
-      v.isHidden = false
+
+    let viewsToShow: [NSView]
+    if onlyControlBar {
+      if let cb = currentControlBar {
+        viewsToShow = [cb]
+      } else {
+        return
+      }
+    } else {
+      viewsToShow = fadeableViews
     }
+
+    animationState = .willShow
+    viewsToShow.forEach { $0.isHidden = false }
     // The OSC may not have been updated while it was hidden to avoid wasting energy. Make sure it
     // is up to date.
     player.refreshSyncUITimer()
     standardWindowButtons.forEach { $0.isEnabled = true }
     NSAnimationContext.runAnimationGroup({ (context) in
       context.duration = UIAnimationDuration
-      fadeableViews.forEach { (v) in
-        v.animator().alphaValue = 1
-      }
-      if !fsState.isFullscreen {
+      viewsToShow.forEach { $0.animator().alphaValue = 1 }
+      if !fsState.isFullscreen && !onlyControlBar {
         titleTextField?.animator().alphaValue = 1
       }
     }) {
@@ -2780,7 +2793,7 @@ class MainWindowController: PlayerWindowController {
   func isUITimerNeeded() -> Bool {
     let isShowingFadeableViews = animationState == .shown || animationState == .willShow
     let isShowingOSD = osdAnimationState == .shown || osdAnimationState == .willShow
-    return isShowingFadeableViews || isShowingOSD
+    return isShowingFadeableViews || isShowingOSD || self.keepControlBar
   }
 
   override func updatePlayTime(withDuration duration: Bool, andProgressBar: Bool) {

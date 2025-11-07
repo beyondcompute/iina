@@ -697,8 +697,8 @@ class PlayerWindowController: NSWindowController, NSWindowDelegate {
       // For auto-hiding to work, need to update the timer.
       player.mainWindow.updateTimer()
     } else {
-      // The user wants the UI to be always visible, need to show it explicitly.
-      player.mainWindow.showUI()
+      // User wants the Control Bar to always be visible, need to show it explicitly.
+      player.mainWindow.showUI(onlyControlBar: true)
     }
   }
 
