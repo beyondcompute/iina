@@ -591,14 +591,14 @@
                 </button>
             </subviews>
             <constraints>
-                <constraint firstItem="10x-bg-xlj" firstAttribute="centerY" secondItem="Yv6-0K-6E4" secondAttribute="centerY" id="4a0-xW-jtL"/>
+                <constraint firstItem="10x-bg-xlj" firstAttribute="centerY" secondItem="Yv6-0K-6E4" secondAttribute="centerY" constant="1" id="4a0-xW-jtL"/>
                 <constraint firstItem="10x-bg-xlj" firstAttribute="left" secondItem="Yv6-0K-6E4" secondAttribute="left" constant="14" id="8Hx-gQ-ez7"/>
-                <constraint firstItem="EIi-qd-glM" firstAttribute="centerY" secondItem="Yv6-0K-6E4" secondAttribute="centerY" id="MRS-GF-0U6"/>
+                <constraint firstItem="EIi-qd-glM" firstAttribute="centerY" secondItem="Yv6-0K-6E4" secondAttribute="centerY" constant="1" id="MRS-GF-0U6"/>
                 <constraint firstItem="gxw-pJ-Lcg" firstAttribute="centerX" secondItem="Yv6-0K-6E4" secondAttribute="centerX" id="PrE-1U-klM"/>
                 <constraint firstItem="EIi-qd-glM" firstAttribute="left" secondItem="gxw-pJ-Lcg" secondAttribute="right" constant="24" id="WtE-JF-0m3"/>
                 <constraint firstAttribute="height" constant="26" id="Y49-r6-uWL"/>
                 <constraint firstItem="gxw-pJ-Lcg" firstAttribute="left" secondItem="10x-bg-xlj" secondAttribute="right" constant="24" id="aEy-x5-Ctd"/>
-                <constraint firstItem="gxw-pJ-Lcg" firstAttribute="centerY" secondItem="Yv6-0K-6E4" secondAttribute="centerY" id="dBB-Jk-nlO"/>
+                <constraint firstItem="gxw-pJ-Lcg" firstAttribute="centerY" secondItem="Yv6-0K-6E4" secondAttribute="centerY" constant="1" id="dBB-Jk-nlO"/>
                 <constraint firstAttribute="right" secondItem="EIi-qd-glM" secondAttribute="right" constant="14" id="enq-Gg-JrN"/>
             </constraints>
             <point key="canvasLocation" x="377" y="703"/>
