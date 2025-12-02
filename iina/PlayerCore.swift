@@ -216,6 +216,10 @@ class PlayerCore: NSObject {
   /// "music mode" status again, change this to `false` so that the preference is honored again.
   var overrideAutoSwitchToMusicMode = false
 
+  /// Direction (+1 forward, -1 backward) for the last audio-cycle command that should skip the "no audio" pseudo-track.
+  private var pendingAudioCycleDirection: Int?
+  private var skippingEmptyAudioTrack = false
+
   var isSearchingOnlineSubtitle = false
 
   /// For supporting mpv `--shuffle` arg, to shuffle playlist when launching from command line
@@ -1215,6 +1219,16 @@ class PlayerCore: NSObject {
     getSelectedTracks()
   }
 
+  /// Record the most recent audio-cycle direction so an ensuing `aid` change can skip the "no audio" entry.
+  func rememberAudioCycleDirection(_ step: Int) {
+    pendingAudioCycleDirection = step >= 0 ? 1 : -1
+  }
+
+  private func wrappedIndex(_ index: Int, count: Int) -> Int {
+    let remainder = index % count
+    return remainder >= 0 ? remainder : remainder + count
+  }
+
   func setSpeed(_ speed: Double) {
     let speed = speed < AppData.mpvMinPlaybackSpeed ? AppData.mpvMinPlaybackSpeed : speed
     mpv.setDouble(MPVOption.PlaybackControl.speed, speed)
@@ -2067,7 +2081,26 @@ class PlayerCore: NSObject {
 
   func aidChanged() {
     guard info.state.active else { return }
+    let previousAid = info.aid
     info.aid = Int(mpv.getInt(MPVOption.TrackSelection.aid))
+
+    if Preference.bool(for: .skipNoAudioTrackInCycle),
+       !info.audioTracks.isEmpty {
+      if skippingEmptyAudioTrack {
+        skippingEmptyAudioTrack = false
+        pendingAudioCycleDirection = nil
+      } else if info.aid == 0 {
+        let direction = pendingAudioCycleDirection ?? 1
+        let candidates = info.audioTracks.filter { $0.id != 0 }
+        if let targetId = (direction >= 0 ? candidates.first?.id : candidates.last?.id) {
+          skippingEmptyAudioTrack = true
+          setTrack(targetId, forType: .audio)
+          return
+        }
+      }
+      pendingAudioCycleDirection = nil
+    }
+
     guard mainWindow.loaded else { return }
     mainWindow?.muteButton.isHidden = (info.aid == 0)
     mainWindow?.volumeSlider.isHidden = (info.aid == 0)

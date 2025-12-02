@@ -194,6 +194,7 @@ struct Preference {
     static let replayGainFallback = Key("replayGainFallback")
 
     static let gaplessAudio = Key("gaplessAudio")
+    static let skipNoAudioTrackInCycle = Key("skipNoAudioTrackInCycle")
 
     static let userEQPresets = Key("userEQPresets")
 
@@ -925,6 +926,7 @@ struct Preference {
     .replayGainClip: false,
     .replayGainFallback: 0,
     .gaplessAudio: GaplessAudioOption.weak.rawValue,
+    .skipNoAudioTrackInCycle: false,
 
     .subAutoLoadIINA: IINAAutoLoadAction.iina.rawValue,
     .subAutoLoadPriorityString: "",

@@ -22,6 +22,9 @@
 /* Class = "NSTextFieldCell"; title = "Default: 0 (Auto)"; ObjectID = "bxW-np-SGm"; */
 "bxW-np-SGm.title" = "Default: 0 (Auto)";
 
+/* Class = "NSButtonCell"; title = "Skip \"No audio\" when cycling tracks"; ObjectID = "N4Z-3m-9qg"; */
+"N4Z-3m-9qg.title" = "Skip \"No audio\" when cycling tracks";
+
 /* Class = "NSTextFieldCell"; title = "(100-1000)"; ObjectID = "cJP-ep-847"; */
 "cJP-ep-847.title" = "(100-1000)";
 

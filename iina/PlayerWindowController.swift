@@ -259,6 +259,12 @@ class PlayerWindowController: NSWindowController, NSWindowDelegate {
         return false
       }
     } else {
+      if keyBinding.action.count >= 2, keyBinding.action.count <= 3,
+         keyBinding.action[0] == MPVCommand.cycle.rawValue,
+         keyBinding.action[1] == "audio" {
+        let step = keyBinding.action.count == 3 && keyBinding.action[2] == "down" ? -1 : 1
+        player.rememberAudioCycleDirection(step)
+      }
       // - mpv command
       let returnValue: Int32
       // execute the command

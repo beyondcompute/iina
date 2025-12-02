@@ -564,6 +564,16 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="ynO-pb-8J5">
+                    <rect key="frame" x="118" y="161" width="252" height="18"/>
+                    <buttonCell key="cell" type="check" title="Skip &quot;No audio&quot; when cycling tracks" bezelStyle="regularSquare" imagePosition="left" inset="2" id="N4Z-3m-9qg">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="pxc-7C-SGP" name="value" keyPath="values.skipNoAudioTrackInCycle" id="9cC-hG-A6r"/>
+                    </connections>
+                </button>
                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kG3-P9-brK">
                     <rect key="frame" x="118" y="343" width="81" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="Audio driver:" id="Zco-Ba-Idk">
@@ -674,7 +684,9 @@
             </subviews>
             <constraints>
                 <constraint firstItem="0Ig-J7-VYp" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="bsP-Kc-xXR" secondAttribute="leading" constant="120" id="0kB-CC-aOZ"/>
-                <constraint firstItem="Taj-6a-uFI" firstAttribute="top" secondItem="qQz-rr-NFX" secondAttribute="bottom" constant="16" id="0ml-o0-wbT"/>
+                <constraint firstItem="Taj-6a-uFI" firstAttribute="top" secondItem="ynO-pb-8J5" secondAttribute="bottom" constant="16" id="0ml-o0-wbT"/>
+                <constraint firstItem="ynO-pb-8J5" firstAttribute="top" secondItem="qQz-rr-NFX" secondAttribute="bottom" constant="8" id="1Nr-gY-Hyh"/>
+                <constraint firstItem="ynO-pb-8J5" firstAttribute="leading" secondItem="qQz-rr-NFX" secondAttribute="leading" id="1fa-aX-4kv"/>
                 <constraint firstItem="iAK-W4-XCh" firstAttribute="leading" secondItem="iB2-dA-Y1E" secondAttribute="leading" id="2FR-9e-yO7"/>
                 <constraint firstItem="haq-Mp-LHn" firstAttribute="baseline" secondItem="Taj-6a-uFI" secondAttribute="baseline" id="2rA-mm-1Cr"/>
                 <constraint firstItem="Mib-1U-RcV" firstAttribute="leading" secondItem="iAK-W4-XCh" secondAttribute="leading" id="3Bm-0k-ONf"/>
